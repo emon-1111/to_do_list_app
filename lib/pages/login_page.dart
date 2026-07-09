@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:to_do_app/constants/colors.dart';
+import 'package:to_do_app/providers/auth_provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,8 +16,36 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isLogin = true;
 
+  void _submit() async {
+    // when pressed the login or sign up the validation shows up
+    if (_formKey.currentState!.validate()) {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      final email = _emailController.text.trim();
+      final password = _passwordController.text.trim();
+
+      bool sucess;
+
+      if (_isLogin) {
+        sucess = await authProvider.signIn(email, password);
+      } else {
+        sucess = await authProvider.signUp(email, password);
+      }
+
+      if (!sucess && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(authProvider.errorMessage ?? "sonething went wrong"),
+            backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -96,17 +126,22 @@ class _LoginPageState extends State<LoginPage> {
                               : 'Already have an account',
                           style: TextStyle(color: AppColors.textSecondary),
                         ),
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              _isLogin = !_isLogin;
-                            });
-                          },
-                          child: Text(
-                            _isLogin ? 'Sign up' : 'Login',
-                            style: TextStyle(color: AppColors.textSecondary),
+                        SizedBox(height: 32),
+
+                        if (authProvider.isLoading)
+                          Center(child: CircularProgressIndicator())
+                        else
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                _isLogin = !_isLogin;
+                              });
+                            },
+                            child: Text(
+                              _isLogin ? 'Sign up' : 'Login',
+                              style: TextStyle(color: AppColors.textSecondary),
+                            ),
                           ),
-                        ),
                       ],
                     ),
                   ],

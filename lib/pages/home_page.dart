@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:to_do_app/providers/auth_provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -11,7 +13,14 @@ class HomePage extends StatelessWidget {
           'To do List',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.exit_to_app))],
+        actions: [
+          IconButton(
+            onPressed: () {
+              Provider.of<AuthProvider>(context, listen: false).logOut();
+            },
+            icon: Icon(Icons.exit_to_app),
+          ),
+        ],
       ),
       body: Column(
         children: [
