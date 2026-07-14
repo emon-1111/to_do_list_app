@@ -27,12 +27,12 @@ class DatabaseService {
     });
   }
 
-  //update todo
+  //updatestatus todo
   Future<void> updateTodoStatus(String id, bool isDone) async {
     await todosCollectiona.doc(id).update({'isDone': isDone});
   }
 
-  //Edit todo
+  //update todo
   Future<void> updateTodo(String id, String title, DateTime? dueDate) async {
     await todosCollectiona.doc(id).update({
       'title': title,

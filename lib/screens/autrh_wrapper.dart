@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:to_do_app/models/to_do_model.dart';
 import 'package:to_do_app/pages/home_page.dart';
 import 'package:to_do_app/pages/login_page.dart';
+import 'package:to_do_app/services/database_service.dart';
 
 class AutrhWrapper extends StatelessWidget {
   const AutrhWrapper({super.key});
@@ -13,7 +15,11 @@ class AutrhWrapper extends StatelessWidget {
     if (user == null) {
       return LoginPage();
     } else {
-      return HomePage();
+      return StreamProvider<List<ToDoModel>>.value(
+        value: Provider.of<DatabaseService>(context).todos,
+        initialData: [],
+        child: HomePage(),
+      );
     }
   }
 }

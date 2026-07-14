@@ -9,19 +9,19 @@ class AuthProvider with ChangeNotifier {
   String? _errorMessage;
 
   // getter is a  function which doesnt required () to be called
-  bool get isLoading => _isLoading; 
+  bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
   Stream<User?> get user => _auth.user;
 
   void _setLoading(bool value) {
     _isLoading = value;
-    _errorMessage = null;
     notifyListeners();
   }
 
   //login
   Future<bool> signIn(String email, String password) async {
+    _errorMessage = null;
     _setLoading(true);
     try {
       await _auth.signIn(email, password);
@@ -39,9 +39,8 @@ class AuthProvider with ChangeNotifier {
   }
 
   //signUp
-
-  //login
   Future<bool> signUp(String email, String password) async {
+    _errorMessage = null;
     _setLoading(true);
     try {
       await _auth.signUp(email, password);

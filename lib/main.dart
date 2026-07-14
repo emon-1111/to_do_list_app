@@ -7,6 +7,7 @@ import 'package:to_do_app/firebase_options.dart';
 import 'package:to_do_app/pages/home_page.dart';
 import 'package:to_do_app/pages/login_page.dart';
 import 'package:to_do_app/screens/autrh_wrapper.dart';
+import 'package:to_do_app/services/database_service.dart';
 import 'providers/auth_provider.dart' as local_Auth;
 
 void main() async {
@@ -29,6 +30,11 @@ class MyApp extends StatelessWidget {
         StreamProvider<User?>(
           create: (context) => context.read<local_Auth.AuthProvider>().user,
           initialData: null,
+        ),
+
+        //Database service depends on user (especiallyt user id)
+        ProxyProvider<User?, DatabaseService>(
+          update: (_, user, _) => DatabaseService(uid: user?.uid),
         ),
       ],
       child: MaterialApp(

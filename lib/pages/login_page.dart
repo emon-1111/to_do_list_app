@@ -23,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
 
+      //An empty box, waiting to be filled in with true or false depending on what happens next.
       bool sucess;
 
       if (_isLogin) {
@@ -113,7 +114,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     SizedBox(height: 32),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _submit();
+                      },
                       child: Text(_isLogin ? 'Log In' : 'Sign Up'),
                     ),
                     SizedBox(height: 32),
